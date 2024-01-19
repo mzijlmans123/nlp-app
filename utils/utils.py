@@ -1,6 +1,6 @@
 import PyPDF2
 
-def f_read_pdf(pdf: str, pagenumber: int) -> str:
+def f_read_pdf(pdf: str, pagenumber="") -> str:
     """
     Args:
         pdf (str):          location and name of PDF
@@ -16,10 +16,15 @@ def f_read_pdf(pdf: str, pagenumber: int) -> str:
     pdfReader = PyPDF2.PdfReader(pdfFileObj)
     
     # creating a page object
-    pageObj = pdfReader.pages[pagenumber]
-    
-    # extracting text from page
-    text = pageObj.extract_text()
+    text = ""
+
+    if pagenumber=="":
+        for page in range(len(pdfReader.pages)):
+            pageObj = pdfReader.pages[page]
+            text += pageObj.extract_text()
+    else:
+        pageObj = pdfReader.pages[pagenumber]
+        text = pageObj.extract_text()
     
     # closing the pdf file object
     pdfFileObj.close()
